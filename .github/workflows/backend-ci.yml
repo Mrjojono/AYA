@@ -11,6 +11,24 @@ permissions:
 jobs:
   quality:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: aya
+          POSTGRES_USER: aya
+          POSTGRES_PASSWORD: aya
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U aya -d aya"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+      redis:
+        image: redis:8-alpine
+        ports:
+          - 6379:6379
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
@@ -18,3 +36,9 @@ jobs:
           enable-cache: true
       - run: uv sync --all-groups --frozen
       - run: make ci
+      - name: Apply migrations
+        env:
+          AYA_DATABASE_URL: postgresql+asyncpg://aya:aya@localhost:5432/aya
+        run: make upgrade
+      - name: Docker build
+        run: docker build -t aya-api .
