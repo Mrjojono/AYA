@@ -11,6 +11,7 @@ from aya_api.db import engine
 from aya_api.logging import configure_logging
 from aya_api.rate_limit import RateLimitMiddleware
 from aya_api.routers import auth, glossary, meals, medications, nutrition, rules
+from aya_api.routers import engine as engine_router
 
 configure_logging()
 
@@ -47,6 +48,7 @@ def create_app() -> FastAPI:
     application.include_router(nutrition.router)
     application.include_router(glossary.router)
     application.include_router(rules.router)
+    application.include_router(engine_router.router)
     return application
 
 
