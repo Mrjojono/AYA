@@ -1,4 +1,3 @@
-# ruff: noqa: E501
 """sprint7_rules
 
 Revision ID: e2155d78736f

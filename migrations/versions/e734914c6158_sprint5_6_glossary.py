@@ -1,4 +1,3 @@
-# ruff: noqa: E501
 """sprint5_6_glossary
 
 Revision ID: e734914c6158
