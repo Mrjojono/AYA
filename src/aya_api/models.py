@@ -160,6 +160,18 @@ class Consent(Base):
     )
 
 
+class Meal(Base):
+    """Recorded meal entry."""
+
+    __tablename__: str = "meal"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    session_id: Mapped[str] = mapped_column(String(64), index=True)
+    raw_text: Mapped[str] = mapped_column(Text)
+    foods: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
 class ImportReport(Base):
     """Quality report for an import run."""
 
