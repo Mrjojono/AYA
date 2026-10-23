@@ -1,0 +1,6 @@
+numero,requete,type_requete,medicament_attendu,resultat_top3,correct_top3
+1,paracetamol,nom_generique_faute_accent,,,
+2,doliprane,nom_commercial,,,
+3,amoxiciline,faute_frappe,,,
+4,coartem,nom_commercial,,,
+5,artemether lumefantrine,nom_generique_compose,,,

@@ -1,0 +1,47 @@
+nutrient,unit,group,ear_or_mean_low,ear_or_mean_high,rni_or_rsi,ul,value_kind,source_table,source_pdf_page,confidence,notes
+vitamin_a,ug_RE,infants_0_6m,180,180,375,,MEAN_REQUIREMENT_AND_RSI,TABLE 2.4 Estimated mean requirement and safe level of intake for vitamin A,55,high,"Mean requirement, not an RNI; RSI is the recommended safe intake"
+vitamin_a,ug_RE,infants_7_12m,190,190,400,,MEAN_REQUIREMENT_AND_RSI,TABLE 2.4 Estimated mean requirement and safe level of intake for vitamin A,55,high,
+vitamin_a,ug_RE,children_1_3y,200,200,400,,MEAN_REQUIREMENT_AND_RSI,TABLE 2.4 Estimated mean requirement and safe level of intake for vitamin A,55,high,
+vitamin_a,ug_RE,children_4_6y,200,200,450,,MEAN_REQUIREMENT_AND_RSI,TABLE 2.4 Estimated mean requirement and safe level of intake for vitamin A,55,high,
+vitamin_a,ug_RE,children_7_9y,250,250,500,,MEAN_REQUIREMENT_AND_RSI,TABLE 2.4 Estimated mean requirement and safe level of intake for vitamin A,55,high,
+vitamin_a,ug_RE,adolescent_10_18y,330,400,600,,MEAN_REQUIREMENT_AND_RSI,TABLE 2.4 Estimated mean requirement and safe level of intake for vitamin A,55,high,
+vitamin_a,ug_RE,adult_f_19_65y,270,270,500,,MEAN_REQUIREMENT_AND_RSI,TABLE 2.4 Estimated mean requirement and safe level of intake for vitamin A,55,high,
+vitamin_a,ug_RE,adult_f_65plus,300,300,600,,MEAN_REQUIREMENT_AND_RSI,TABLE 2.4 Estimated mean requirement and safe level of intake for vitamin A,55,high,
+vitamin_a,ug_RE,adult_m_19_65y,300,300,600,,MEAN_REQUIREMENT_AND_RSI,TABLE 2.4 Estimated mean requirement and safe level of intake for vitamin A,55,high,
+vitamin_a,ug_RE,adult_m_65plus,300,300,600,,MEAN_REQUIREMENT_AND_RSI,TABLE 2.4 Estimated mean requirement and safe level of intake for vitamin A,55,high,
+vitamin_a,ug_RE,pregnant_women,370,370,800,,MEAN_REQUIREMENT_AND_RSI,TABLE 2.4 Estimated mean requirement and safe level of intake for vitamin A,55,high,
+vitamin_a,ug_RE,lactating_women,450,450,850,,MEAN_REQUIREMENT_AND_RSI,TABLE 2.4 Estimated mean requirement and safe level of intake for vitamin A,55,high,
+vitamin_b12,ug,infants_0_6m,0.3,0.3,0.4,,EAR_AND_RNI,"TABLE 14.1 EARs and RNIs for vitamin B12, by group",304,high,Source labels units mg/day; values are µg/day (source typo)
+vitamin_b12,ug,infants_7_12m,0.6,0.6,0.7,,EAR_AND_RNI,"TABLE 14.1 EARs and RNIs for vitamin B12, by group",304,high,Source labels units mg/day; values are µg/day (source typo)
+vitamin_b12,ug,children_1_3y,0.7,0.7,0.9,,EAR_AND_RNI,"TABLE 14.1 EARs and RNIs for vitamin B12, by group",304,high,Source labels units mg/day; values are µg/day (source typo)
+vitamin_b12,ug,children_4_6y,1.0,1.0,1.2,,EAR_AND_RNI,"TABLE 14.1 EARs and RNIs for vitamin B12, by group",304,high,Source labels units mg/day; values are µg/day (source typo)
+vitamin_b12,ug,children_7_9y,1.5,1.5,1.8,,EAR_AND_RNI,"TABLE 14.1 EARs and RNIs for vitamin B12, by group",304,high,Source labels units mg/day; values are µg/day (source typo)
+vitamin_b12,ug,adolescent_10_18y,2.0,2.0,2.4,,EAR_AND_RNI,"TABLE 14.1 EARs and RNIs for vitamin B12, by group",304,high,Source labels units mg/day; values are µg/day (source typo)
+vitamin_b12,ug,adult_19_65y,2.0,2.0,2.4,,EAR_AND_RNI,"TABLE 14.1 EARs and RNIs for vitamin B12, by group",304,high,Source labels units mg/day; values are µg/day (source typo)
+vitamin_b12,ug,elderly_65plus,2.0,2.0,2.4,,EAR_AND_RNI,"TABLE 14.1 EARs and RNIs for vitamin B12, by group",304,high,Source labels units mg/day; values are µg/day (source typo)
+vitamin_b12,ug,pregnant_women,2.2,2.2,2.6,,EAR_AND_RNI,"TABLE 14.1 EARs and RNIs for vitamin B12, by group",304,high,Source labels units mg/day; values are µg/day (source typo)
+vitamin_b12,ug,lactating_women,2.4,2.4,2.8,,EAR_AND_RNI,"TABLE 14.1 EARs and RNIs for vitamin B12, by group",304,high,Source labels units mg/day; values are µg/day (source typo)
+folate,ug_DFE,infants_0_6m,65,65,80,,EAR_AND_RNI,"TABLE 15.1 EARs and RNIs for folic acid (DFE), by group",316,high,Source labels units mg/day; values are µg DFE/day (source typo)
+folate,ug_DFE,infants_7_12m,65,65,80,,EAR_AND_RNI,"TABLE 15.1 EARs and RNIs for folic acid (DFE), by group",316,high,
+folate,ug_DFE,children_1_3y,120,120,150,,EAR_AND_RNI,"TABLE 15.1 EARs and RNIs for folic acid (DFE), by group",316,high,
+folate,ug_DFE,children_4_6y,160,160,200,,EAR_AND_RNI,"TABLE 15.1 EARs and RNIs for folic acid (DFE), by group",316,high,
+folate,ug_DFE,children_7_9y,250,250,300,,EAR_AND_RNI,"TABLE 15.1 EARs and RNIs for folic acid (DFE), by group",316,high,
+folate,ug_DFE,adolescent_10_18y,330,330,400,,EAR_AND_RNI,"TABLE 15.1 EARs and RNIs for folic acid (DFE), by group",316,high,
+folate,ug_DFE,adult_19_65y,320,320,400,,EAR_AND_RNI,"TABLE 15.1 EARs and RNIs for folic acid (DFE), by group",316,high,
+folate,ug_DFE,elderly_65plus,320,320,400,,EAR_AND_RNI,"TABLE 15.1 EARs and RNIs for folic acid (DFE), by group",316,high,
+folate,ug_DFE,pregnant_women,520,520,600,,EAR_AND_RNI,"TABLE 15.1 EARs and RNIs for folic acid (DFE), by group",316,high,
+folate,ug_DFE,lactating_women,450,450,500,,EAR_AND_RNI,"TABLE 15.1 EARs and RNIs for folic acid (DFE), by group",316,high,
+vitamin_c,mg,adult,,,,1000,UL_ADVISABLE_UPPER_LIMIT,"Vitamin C chapter, toxicity text",159,high,Consultation agreed 1 g/day as advisable upper limit; no separate child/pregnancy UL stated
+vitamin_b6,mg,adult,,,,100,UL_STATED_IN_TEXT,"Vitamin B6 chapter, toxicity text",196,high,"Adopted from the US Food and Nutrition Board; applied as stated, group not specified in text"
+selenium,ug,adult,,,,400,UL_PROVISIONAL,"Selenium chapter, toxicity text",229,high,Provisional UL for adults; source says UL for children and pregnant/lactating women not determined
+zinc,mg,adult_m_19_65y,,,,45,UL_STATED_IN_TEXT,"Zinc chapter, toxicity text",261,high,Upper level for adult men; extrapolated to other groups by basal metabolic rate
+zinc,mg,children,,,,23-28,UL_EXTRAPOLATED,"Zinc chapter, toxicity text",261,high,"Extrapolated range for children, from the adult man value"
+folate,ug,adult,,,,1000,UL_CITED_FROM_US_NAS,"Folate chapter, toxicity text",319,high,"Cited from US NAS, not a Consultation UL; the source describes 400-1000 µg folic acid/day as probably safe"
+iodine,mg_per_kg_body_weight_per_day,premature_infants,,,30,100,RECOMMENDED_INTAKE_AND_UL_PER_KG,"TABLE 16.5 Recommended dietary intakes of iodine and upper limits, by group",333,high,Per kg body weight. Annex 1 gives iodine as µg/day; these are different units. Do not merge without conversion.
+iodine,mg_per_kg_body_weight_per_day,infants_0_6m,,,15,150,RECOMMENDED_INTAKE_AND_UL_PER_KG,"TABLE 16.5 Recommended dietary intakes of iodine and upper limits, by group",333,high,Per kg body weight. Annex 1 gives iodine as µg/day; these are different units. Do not merge without conversion.
+iodine,mg_per_kg_body_weight_per_day,infants_7_12m,,,15,140,RECOMMENDED_INTAKE_AND_UL_PER_KG,"TABLE 16.5 Recommended dietary intakes of iodine and upper limits, by group",333,high,Per kg body weight. Annex 1 gives iodine as µg/day; these are different units. Do not merge without conversion.
+iodine,mg_per_kg_body_weight_per_day,children_1_6y,,,6,50,RECOMMENDED_INTAKE_AND_UL_PER_KG,"TABLE 16.5 Recommended dietary intakes of iodine and upper limits, by group",333,high,Per kg body weight. Annex 1 gives iodine as µg/day; these are different units. Do not merge without conversion.
+iodine,mg_per_kg_body_weight_per_day,children_7_12y,,,4,50,RECOMMENDED_INTAKE_AND_UL_PER_KG,"TABLE 16.5 Recommended dietary intakes of iodine and upper limits, by group",333,high,Per kg body weight. Annex 1 gives iodine as µg/day; these are different units. Do not merge without conversion.
+iodine,mg_per_kg_body_weight_per_day,adolescent_adult_13plus,,,2,30,RECOMMENDED_INTAKE_AND_UL_PER_KG,"TABLE 16.5 Recommended dietary intakes of iodine and upper limits, by group",333,high,Per kg body weight. Annex 1 gives iodine as µg/day; these are different units. Do not merge without conversion.
+iodine,mg_per_kg_body_weight_per_day,pregnant_women,,,3.5,40,RECOMMENDED_INTAKE_AND_UL_PER_KG,"TABLE 16.5 Recommended dietary intakes of iodine and upper limits, by group",333,high,Per kg body weight. Annex 1 gives iodine as µg/day; these are different units. Do not merge without conversion.
+iodine,mg_per_kg_body_weight_per_day,lactating_women,,,3.5,40,RECOMMENDED_INTAKE_AND_UL_PER_KG,"TABLE 16.5 Recommended dietary intakes of iodine and upper limits, by group",333,high,Per kg body weight. Annex 1 gives iodine as µg/day; these are different units. Do not merge without conversion.

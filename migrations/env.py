@@ -8,6 +8,7 @@ from alembic import context
 from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import AsyncEngine, async_engine_from_config
 
+from aya_api import models  # noqa: F401
 from aya_api.config import get_settings
 from aya_api.db import Base
 
