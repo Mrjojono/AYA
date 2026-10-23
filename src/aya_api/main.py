@@ -10,7 +10,7 @@ from pydantic import BaseModel, ConfigDict
 from aya_api.db import engine
 from aya_api.logging import configure_logging
 from aya_api.rate_limit import RateLimitMiddleware
-from aya_api.routers import auth, meals, medications, nutrition
+from aya_api.routers import auth, glossary, meals, medications, nutrition
 
 configure_logging()
 
@@ -45,6 +45,7 @@ def create_app() -> FastAPI:
     application.include_router(medications.router)
     application.include_router(meals.router)
     application.include_router(nutrition.router)
+    application.include_router(glossary.router)
     return application
 
 

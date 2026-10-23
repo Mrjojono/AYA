@@ -174,6 +174,20 @@ class Meal(Base):
     )
 
 
+class Glossary(Base):
+    """Local dish/food glossary entry."""
+
+    __tablename__: str = "glossary"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    term: Mapped[str] = mapped_column(String(255), index=True)
+    canonical: Mapped[str] = mapped_column(String(255))
+    components: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+
+
 class ImportReport(Base):
     """Quality report for an import run."""
 
