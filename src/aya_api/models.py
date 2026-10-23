@@ -188,6 +188,20 @@ class Glossary(Base):
     )
 
 
+class InteractionRule(Base):
+    """Candidate drug-food interaction rule."""
+
+    __tablename__: str = "interaction_rule"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    drug: Mapped[str] = mapped_column(String(255), index=True)
+    food: Mapped[str] = mapped_column(String(255), index=True)
+    severity: Mapped[str] = mapped_column(String(32))
+    source: Mapped[str] = mapped_column(String(64))
+    active: Mapped[bool] = mapped_column(default=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
 class ImportReport(Base):
     """Quality report for an import run."""
 
