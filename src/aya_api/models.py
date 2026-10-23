@@ -125,6 +125,8 @@ class MedicationSynonym(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
+
+
 class Profile(Base):
     """User health profile (age required)."""
 

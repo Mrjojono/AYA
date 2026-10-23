@@ -43,11 +43,11 @@ async def search(
             med = next((m for m in meds if m.dci == syn.canonical_dci), None)
             if med is not None:
                 results.append(
-                {
-                    "name": med.commercial_name,
-                    "dci": med.dci,
-                    "atc_code": med.atc_code,
-                    "score": score,
-                }
-            )
+                    {
+                        "name": med.commercial_name,
+                        "dci": med.dci,
+                        "atc_code": med.atc_code,
+                        "score": score,
+                    }
+                )
     return results
