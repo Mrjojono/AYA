@@ -35,10 +35,13 @@ jobs:
         with:
           enable-cache: true
       - run: uv sync --all-groups --frozen
-      - run: make ci
       - name: Apply migrations
         env:
           AYA_DATABASE_URL: postgresql+asyncpg://aya:aya@localhost:5432/aya
         run: make upgrade
+      - name: Quality
+        env:
+          AYA_DATABASE_URL: postgresql+asyncpg://aya:aya@localhost:5432/aya
+        run: make ci
       - name: Docker build
         run: docker build -t aya-api .
