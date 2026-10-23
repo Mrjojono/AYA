@@ -18,7 +18,7 @@ async def evaluate(drug: str, food: str, session: SessionDep) -> dict[str, objec
     """Evaluate a drug-food pair and return a three-tier outcome."""
     severity = await check(session, drug, food)
     if severity is None:
-        outcome = "green"
+        outcome = "unavailable"
     elif severity.lower() in {"major", "red"}:
         outcome = "red"
     else:
