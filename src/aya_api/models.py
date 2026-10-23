@@ -172,6 +172,8 @@ class Meal(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
+
+
 class ImportReport(Base):
     """Quality report for an import run."""
 
