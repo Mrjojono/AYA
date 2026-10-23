@@ -22,9 +22,7 @@ async def total(
     session: SessionDep,
 ) -> dict[str, float]:
     """Compute total nutrients for a list of foods and quantities."""
-    stmt = select(Food).where(
-        Food.name.in_(food_names)
-    )
+    stmt = select(Food).where(Food.name.in_(food_names))
     foods = (await session.execute(stmt)).scalars().all()
     food_dicts: list[dict[str, object]] = [
         {"name": f.name, "nutrients": f.nutrients} for f in foods
