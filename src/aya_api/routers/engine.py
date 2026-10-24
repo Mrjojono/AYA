@@ -16,7 +16,9 @@ SessionDep = Annotated[AsyncSession, Depends(get_session)]
 
 
 @router.get("/evaluate")
-async def evaluate(drug: str, food: str, session_id: str = "anonymous", session: SessionDep = None) -> dict[str, object]:
+async def evaluate(
+    drug: str, food: str, session_id: str = "anonymous", session: SessionDep = None
+) -> dict[str, object]:
     """Evaluate a drug-food pair and return a three-tier outcome."""
     severity = await check(session, drug, food)
     if severity is None:
@@ -35,13 +37,17 @@ async def evaluate(drug: str, food: str, session_id: str = "anonymous", session:
     profile = result.scalars().first()
     if profile:
         if profile.allergies:
-            allergies = [a.strip().lower() for a in profile.allergies.split(",") if a.strip()]
+            allergies = [
+                a.strip().lower() for a in profile.allergies.split(",") if a.strip()
+            ]
             food_l = food.lower()
             if any(a and a in food_l for a in allergies):
                 alerts.append(f"Allergène potentiel détecté pour {food}")
                 outcome = "red"
         if profile.conditions:
-            alerts.append(f"Profil : conditions déclarées à considérer - {profile.conditions}")
+            alerts.append(
+                f"Profil : conditions déclarées à considérer - {profile.conditions}"
+            )
 
     # Get rule metadata for sources/versions
     rule_stmt = select(InteractionRule).where(
@@ -66,4 +72,3 @@ async def evaluate(drug: str, food: str, session_id: str = "anonymous", session:
         "sources": sources,
         "versions": {"rules_version": "v1", "sources": sources},
     }
-

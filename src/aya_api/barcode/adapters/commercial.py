@@ -9,7 +9,7 @@ class CommercialAdapter:
     license = "commercial"
     enabled = False
 
-    def __init__(self, session=None):
+    def __init__(self, session=None) -> None:
         self.enabled = is_commercial_enabled()
         self.session = session
 

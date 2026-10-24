@@ -1,6 +1,5 @@
 """Tests for OCR pipeline."""
 
-import json
 from pathlib import Path
 
 
@@ -12,7 +11,8 @@ def test_etiquettes_dir_exists() -> None:
 
 def test_pipeline_structure() -> None:
     """Test OCR pipeline modules exist."""
-    from aya_api.ocr import preprocess, engine, quality, extract, pipeline
+    from aya_api.ocr import engine, extract, pipeline, preprocess, quality
+
     assert preprocess is not None
     assert engine is not None
     assert quality is not None

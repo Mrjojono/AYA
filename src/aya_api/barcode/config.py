@@ -16,7 +16,13 @@ def load_sources_config() -> dict:
             return yaml.safe_load(f) or {}
     return {
         "barcode": {
-            "order": ["cache", "interne_valide", "off_local", "gs1_gepir", "api_commerciale"],
+            "order": [
+                "cache",
+                "interne_valide",
+                "off_local",
+                "gs1_gepir",
+                "api_commerciale",
+            ],
             "stop_on_first_valid": True,
             "timeout_per_source_s": 3,
         },
@@ -29,4 +35,8 @@ def load_sources_config() -> dict:
 
 def is_commercial_enabled() -> bool:
     """Check if commercial API is enabled."""
-    return os.getenv("AYA_BARCODE_COMMERCIAL_ENABLED", "false").lower() in ("true", "1", "yes")
+    return os.getenv("AYA_BARCODE_COMMERCIAL_ENABLED", "false").lower() in (
+        "true",
+        "1",
+        "yes",
+    )

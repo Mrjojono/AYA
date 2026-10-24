@@ -33,5 +33,7 @@ async def get_matrix(session: AsyncSession) -> list[dict[str, str]]:
     """Return full matrix as list."""
     stmt = select(InteractionRule).where(InteractionRule.active.is_(True))
     rules = (await session.execute(stmt)).scalars().all()
-    return [{"drug": r.drug, "food": r.food, "severity": r.severity, "source": r.source} for r in rules]
-
+    return [
+        {"drug": r.drug, "food": r.food, "severity": r.severity, "source": r.source}
+        for r in rules
+    ]

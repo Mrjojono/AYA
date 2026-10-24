@@ -39,17 +39,31 @@ class ConsentResponse(BaseModel):
 @router.post("", status_code=201)
 async def set_consent(payload: ConsentRequest, session: SessionDep) -> ConsentResponse:
     """Set consent for a specific purpose."""
-    consent = Consent(session_id=payload.session_id, purpose=payload.purpose, granted=payload.granted)
+    consent = Consent(
+        session_id=payload.session_id, purpose=payload.purpose, granted=payload.granted
+    )
     session.add(consent)
     await session.commit()
     await session.refresh(consent)
-    return ConsentResponse(id=consent.id, session_id=consent.session_id, purpose=consent.purpose, granted=consent.granted)
+    return ConsentResponse(
+        id=consent.id,
+        session_id=consent.session_id,
+        purpose=consent.purpose,
+        granted=consent.granted,
+    )
 
 
 @router.get("")
-async def get_consents(session_id: str = "anonymous", session: SessionDep = None) -> list[ConsentResponse]:
+async def get_consents(
+    session_id: str = "anonymous", session: SessionDep = None
+) -> list[ConsentResponse]:
     """Get all consents for a session."""
     stmt = select(Consent).where(Consent.session_id == session_id)
     result = await session.execute(stmt)
     consents = result.scalars().all()
-    return [ConsentResponse(id=c.id, session_id=c.session_id, purpose=c.purpose, granted=c.granted) for c in consents]
+    return [
+        ConsentResponse(
+            id=c.id, session_id=c.session_id, purpose=c.purpose, granted=c.granted
+        )
+        for c in consents
+    ]

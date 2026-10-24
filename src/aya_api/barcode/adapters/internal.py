@@ -12,7 +12,7 @@ class InternalAdapter:
     license = "internal"
     enabled = True
 
-    def __init__(self, session: AsyncSession):
+    def __init__(self, session: AsyncSession) -> None:
         self.session = session
 
     async def lookup(self, gtin: str) -> SourceResult | None:
@@ -42,7 +42,14 @@ class InternalAdapter:
         return None
 
     async def search(self, name: str) -> list[SourceResult]:
-        stmt = select(Product).where(Product.product_name.ilike(f"%{name}%"), (Product.validated.is_(True) | (Product.source == "internal"))).limit(10)
+        stmt = (
+            select(Product)
+            .where(
+                Product.product_name.ilike(f"%{name}%"),
+                (Product.validated.is_(True) | (Product.source == "internal")),
+            )
+            .limit(10)
+        )
         result = await self.session.execute(stmt)
         prods = result.scalars().all()
         out = []

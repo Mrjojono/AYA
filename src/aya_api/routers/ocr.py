@@ -18,18 +18,30 @@ SessionDep = Annotated[AsyncSession, Depends(get_session)]
 
 
 @router.post("/label")
-async def process_label(file: UploadFile = File(...), session: SessionDep = None) -> dict:
+async def process_label(
+    file: Annotated[UploadFile, File()], session: SessionDep = None
+) -> dict:
     """Process label image and extract information."""
     # Validate extension
-    ext = file.filename.split(".")[-1].lower() if file.filename and "." in file.filename else ""
+    ext = (
+        file.filename.split(".")[-1].lower()
+        if file.filename and "." in file.filename
+        else ""
+    )
     if ext not in ocr_config.allowed_extensions:
-        raise HTTPException(status_code=400, detail=f"Unsupported format. Allowed: {ocr_config.allowed_extensions}")
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unsupported format. Allowed: {ocr_config.allowed_extensions}",
+        )
 
     # Read content
     content = await file.read()
     max_size = ocr_config.max_upload_size_mb * 1024 * 1024
     if len(content) > max_size:
-        raise HTTPException(status_code=400, detail=f"File too large. Max: {ocr_config.max_upload_size_mb}MB")
+        raise HTTPException(
+            status_code=400,
+            detail=f"File too large. Max: {ocr_config.max_upload_size_mb}MB",
+        )
 
     # Save to temp
     tmp_dir = Path(ocr_config.tmp_dir)
@@ -55,4 +67,4 @@ async def process_label(file: UploadFile = File(...), session: SessionDep = None
                 os.unlink(filepath)
         except Exception:
             pass
-        raise HTTPException(status_code=500, detail=f"OCR processing failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"OCR processing failed: {e!s}")

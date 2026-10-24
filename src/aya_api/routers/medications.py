@@ -63,7 +63,9 @@ async def related(
 ) -> list[dict[str, object]]:
     """Get medications related to the same active substance/DCI."""
     if dci is None and name is None:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="dci or name required")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="dci or name required"
+        )
     stmt = select(Medication)
     meds = (await session.execute(stmt)).scalars().all()
     if dci:

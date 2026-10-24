@@ -1,12 +1,14 @@
 """OCR pipeline."""
 
 import os
-import uuid
 from pathlib import Path
 
-from aya_api.ocr.config import ocr_config
 from aya_api.ocr.engine import get_engine
-from aya_api.ocr.extract import extract_allergens, extract_ingredients, extract_nutrition
+from aya_api.ocr.extract import (
+    extract_allergens,
+    extract_ingredients,
+    extract_nutrition,
+)
 from aya_api.ocr.preprocess import preprocess_image
 from aya_api.ocr.quality import compute_quality
 
@@ -14,7 +16,7 @@ from aya_api.ocr.quality import compute_quality
 class OCRPipeline:
     """Main OCR pipeline."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.engine = get_engine()
 
     async def process(self, image_path: Path) -> dict:
@@ -46,7 +48,7 @@ class OCRPipeline:
             if not allergens:
                 zones_illisibles.append("allergens.possibly_absent_or_unreadable")
 
-            result = {
+            return {
                 "text_extracted": full_text,
                 "words": words,
                 "quality": quality,
@@ -62,7 +64,6 @@ class OCRPipeline:
                 "zones_illisibles": zones_illisibles,
                 "status": "done",
             }
-            return result
         finally:
             # Always delete files after processing
             try:
@@ -71,7 +72,11 @@ class OCRPipeline:
             except Exception:
                 pass
             try:
-                if preprocessed and preprocessed.exists() and preprocessed != image_path:
+                if (
+                    preprocessed
+                    and preprocessed.exists()
+                    and preprocessed != image_path
+                ):
                     os.unlink(preprocessed)
             except Exception:
                 pass

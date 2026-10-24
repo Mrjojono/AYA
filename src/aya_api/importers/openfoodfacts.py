@@ -3,13 +3,16 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from aya_api.models import ImportReport, Product
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
+    from sqlalchemy.ext.asyncio import AsyncSession
 
 
 def compute_confidence(product: dict[str, Any]) -> tuple[float, str]:
@@ -39,7 +42,9 @@ def compute_confidence(product: dict[str, Any]) -> tuple[float, str]:
     return score, quality
 
 
-async def import_from_jsonl(session: AsyncSession, path: Path, source_version: str = "2024") -> int:
+async def import_from_jsonl(
+    session: AsyncSession, path: Path, source_version: str = "2024"
+) -> int:
     """Import products from JSONL file."""
     count = 0
     with path.open() as f:
@@ -58,9 +63,13 @@ async def import_from_jsonl(session: AsyncSession, path: Path, source_version: s
             nutri = data.get("nutriments") or {}
             confidence, quality = compute_confidence(data)
             product_name = data.get("product_name") or data.get("product_name_fr")
-            ingredients = data.get("ingredients_text") or data.get("ingredients_text_fr")
+            ingredients = data.get("ingredients_text") or data.get(
+                "ingredients_text_fr"
+            )
             brands = data.get("brands")
-            categories = data.get("categories") or ", ".join(data.get("categories_tags", []))
+            categories = data.get("categories") or ", ".join(
+                data.get("categories_tags", [])
+            )
             stmt = select(Product).where(Product.barcode == code)
             res = await session.execute(stmt)
             existing = res.scalars().first()
@@ -72,7 +81,9 @@ async def import_from_jsonl(session: AsyncSession, path: Path, source_version: s
                 existing.nutrients = nutri if isinstance(nutri, dict) else {}
                 existing.nutriscore_grade = data.get("nutriscore_grade")
                 existing.nova_group = data.get("nova_group")
-                existing.image_url = data.get("image_url") or data.get("image_front_url")
+                existing.image_url = data.get("image_url") or data.get(
+                    "image_front_url"
+                )
                 existing.countries = data.get("countries")
                 existing.source_version = source_version
                 existing.confidence = confidence

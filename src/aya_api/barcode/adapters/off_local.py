@@ -12,7 +12,7 @@ class OffLocalAdapter:
     license = "ODbL"
     enabled = True
 
-    def __init__(self, session: AsyncSession):
+    def __init__(self, session: AsyncSession) -> None:
         self.session = session
 
     async def lookup(self, gtin: str) -> SourceResult | None:
@@ -66,7 +66,11 @@ class OffLocalAdapter:
         prods = result.scalars().all()
         out = []
         for prod in prods:
-            if prod.source == "openfoodfacts" or (prod.source and "off" in prod.source) or prod.license == "ODbL":
+            if (
+                prod.source == "openfoodfacts"
+                or (prod.source and "off" in prod.source)
+                or prod.license == "ODbL"
+            ):
                 out.append(
                     SourceResult(
                         gtin=prod.barcode,

@@ -41,7 +41,11 @@ async def analyze_meal(
         # simple extraction from text
         from rapidfuzz import process
 
-        keys = [f.name for f in foods_db] + [g.term for g in glossary] + [g.canonical for g in glossary]
+        keys = (
+            [f.name for f in foods_db]
+            + [g.term for g in glossary]
+            + [g.canonical for g in glossary]
+        )
         matches = process.extract(text, keys, limit=8, score_cutoff=50)
         seen = set()
         for name, score, _ in matches:
@@ -53,7 +57,11 @@ async def analyze_meal(
     # Nutrition
     totals = {}
     if food_names and quantities_g:
-        food_dicts = [{"name": f.name, "nutrients": f.nutrients} for f in foods_db if f.name in food_names]
+        food_dicts = [
+            {"name": f.name, "nutrients": f.nutrients}
+            for f in foods_db
+            if f.name in food_names
+        ]
         totals = total_nutrients(food_dicts, quantities_g)
 
     # Interactions
@@ -76,11 +84,20 @@ async def analyze_meal(
         "extracted": extracted,
         "nutrition_totals": totals,
         "interactions": interactions,
-        "progress": {"extraction": "done", "nutrition": "done" if totals else "pending", "interactions": "done"},
+        "progress": {
+            "extraction": "done",
+            "nutrition": "done" if totals else "pending",
+            "interactions": "done",
+        },
     }
 
 
 @router.get("/status")
 async def analysis_status(job_id: str | None = None) -> dict[str, object]:
     """Expose analysis progress/state."""
-    return {"job_id": job_id or "latest", "status": "completed", "progress": 100, "steps": ["extraction", "nutrition", "interactions", "rules"]}
+    return {
+        "job_id": job_id or "latest",
+        "status": "completed",
+        "progress": 100,
+        "steps": ["extraction", "nutrition", "interactions", "rules"],
+    }

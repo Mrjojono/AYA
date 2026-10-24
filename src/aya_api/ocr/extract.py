@@ -4,9 +4,27 @@ import re
 from typing import Any
 
 ALLERGEN_KEYWORDS = [
-    "arachide", "cacahuète", "noix", "amande", "gluten", "blé", "orge", "seigle",
-    "lait", "lactose", "œuf", "oeuf", "soja", "poisson", "crustacé", "mollusque",
-    "céleri", "moutarde", "sésame", "sulfite", "fruits à coque"
+    "arachide",
+    "cacahuète",
+    "noix",
+    "amande",
+    "gluten",
+    "blé",
+    "orge",
+    "seigle",
+    "lait",
+    "lactose",
+    "œuf",
+    "oeuf",
+    "soja",
+    "poisson",
+    "crustacé",
+    "mollusque",
+    "céleri",
+    "moutarde",
+    "sésame",
+    "sulfite",
+    "fruits à coque",
 ]
 
 
@@ -43,11 +61,26 @@ def extract_nutrition(words: list[dict]) -> dict[str, Any]:
                 unit = match.group(2) if len(match.groups()) >= 2 else None
                 if not unit and key == "energie" and len(match.groups()) >= 3:
                     unit = match.group(3)
-                results[key] = {"value": value, "unit": unit, "confidence": 0.5, "status": "extracted"}
+                results[key] = {
+                    "value": value,
+                    "unit": unit,
+                    "confidence": 0.5,
+                    "status": "extracted",
+                }
             except Exception:
-                results[key] = {"value": None, "unit": None, "confidence": 0.0, "status": "ILLISIBLE"}
+                results[key] = {
+                    "value": None,
+                    "unit": None,
+                    "confidence": 0.0,
+                    "status": "ILLISIBLE",
+                }
         else:
-            results[key] = {"value": None, "unit": None, "confidence": 0.0, "status": "ILLISIBLE"}
+            results[key] = {
+                "value": None,
+                "unit": None,
+                "confidence": 0.0,
+                "status": "ILLISIBLE",
+            }
 
     return results
 
@@ -56,7 +89,11 @@ def extract_ingredients(words: list[dict]) -> dict[str, Any]:
     """Extract ingredients section."""
     text_blob = " ".join([w["text"] for w in words])
     # Find "ingrédients" keyword
-    match = re.search(r"ingr[ée]dients?[\s:]+(.+?)(?:\.|allerg[èe]ne|valeur|$)", text_blob, re.IGNORECASE | re.DOTALL)
+    match = re.search(
+        r"ingr[ée]dients?[\s:]+(.+?)(?:\.|allerg[èe]ne|valeur|$)",
+        text_blob,
+        re.IGNORECASE | re.DOTALL,
+    )
     if match:
         ingredients_text = match.group(1).strip()[:500]
         return {"text": ingredients_text, "confidence": 0.5, "status": "extracted"}

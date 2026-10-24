@@ -8,7 +8,7 @@ class Gs1GepirAdapter:
     license = "unknown"
     enabled = True
 
-    def __init__(self, session=None):
+    def __init__(self, session=None) -> None:
         self.session = session
 
     async def lookup(self, gtin: str) -> SourceResult | None:

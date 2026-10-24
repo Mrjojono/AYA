@@ -47,7 +47,9 @@ class ProfileResponse(BaseModel):
 
 
 @router.post("", status_code=status.HTTP_201_CREATED)
-async def create_profile(payload: ProfileCreate, session: SessionDep) -> ProfileResponse:
+async def create_profile(
+    payload: ProfileCreate, session: SessionDep
+) -> ProfileResponse:
     """Create a user health profile (age required)."""
     profile = Profile(
         session_id=payload.session_id,
@@ -76,13 +78,17 @@ async def create_profile(payload: ProfileCreate, session: SessionDep) -> Profile
 
 
 @router.get("")
-async def get_profile(session_id: str = "anonymous", session: SessionDep = None) -> ProfileResponse:
+async def get_profile(
+    session_id: str = "anonymous", session: SessionDep = None
+) -> ProfileResponse:
     """Get profile by session_id."""
     stmt = select(Profile).where(Profile.session_id == session_id)
     result = await session.execute(stmt)
     profile = result.scalars().first()
     if profile is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Profile not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Profile not found"
+        )
     return ProfileResponse(
         id=profile.id,
         session_id=profile.session_id,
@@ -97,7 +103,9 @@ async def get_profile(session_id: str = "anonymous", session: SessionDep = None)
 
 
 @router.put("")
-async def update_profile(payload: ProfileCreate, session_id: str = "anonymous", session: SessionDep = None) -> ProfileResponse:
+async def update_profile(
+    payload: ProfileCreate, session_id: str = "anonymous", session: SessionDep = None
+) -> ProfileResponse:
     """Update profile."""
     stmt = select(Profile).where(Profile.session_id == session_id)
     result = await session.execute(stmt)

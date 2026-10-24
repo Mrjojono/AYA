@@ -1,7 +1,7 @@
 """Nutrition routes."""
 
-from typing import Annotated
 from datetime import datetime, timedelta
+from typing import Annotated
 
 from fastapi import APIRouter, Depends
 from sqlalchemy import select
@@ -54,7 +54,11 @@ async def check_totals(
     exceeded: list[dict[str, object]] = []
     for t in thresholds:
         nutrient_key = t.nutrient.lower()
-        val = totals.get(t.nutrient) or totals.get(nutrient_key) or totals.get(nutrient_key.replace(" ", "_"))
+        val = (
+            totals.get(t.nutrient)
+            or totals.get(nutrient_key)
+            or totals.get(nutrient_key.replace(" ", "_"))
+        )
         if val is None:
             continue
         if t.rni_high is not None and val > float(t.rni_high):
@@ -71,7 +75,9 @@ async def check_totals(
 
     message = None
     if exceeded and len(exceeded) >= 2:
-        message = "Dépassements fréquents observés : privilégiez l'équilibre sur la journée."
+        message = (
+            "Dépassements fréquents observés : privilégiez l'équilibre sur la journée."
+        )
     elif exceeded:
         message = "Un ou plusieurs nutriments dépassent les seuils de référence."
 
@@ -86,20 +92,28 @@ async def check_totals(
 
 
 @router.get("/trends")
-async def trends(session_id: str = "anonymous", days: int = 7, session: SessionDep = None) -> dict[str, object]:
+async def trends(
+    session_id: str = "anonymous", days: int = 7, session: SessionDep = None
+) -> dict[str, object]:
     """Get daily/weekly nutrition totals and trends."""
-    since = datetime.utcnow() - timedelta(days=days)
-    stmt = select(Meal).where(Meal.session_id == session_id).order_by(Meal.created_at.asc())
+    datetime.utcnow() - timedelta(days=days)
+    stmt = (
+        select(Meal)
+        .where(Meal.session_id == session_id)
+        .order_by(Meal.created_at.asc())
+    )
     result = await session.execute(stmt)
     meals = result.scalars().all()
     # Return structure for trends (placeholder aggregates)
     daily = []
     for m in meals:
-        daily.append({
-            "date": m.created_at.date().isoformat() if m.created_at else None,
-            "meal_id": m.id,
-            "raw_text": m.raw_text,
-        })
+        daily.append(
+            {
+                "date": m.created_at.date().isoformat() if m.created_at else None,
+                "meal_id": m.id,
+                "raw_text": m.raw_text,
+            }
+        )
     return {
         "session_id": session_id,
         "days": days,
@@ -107,5 +121,3 @@ async def trends(session_id: str = "anonymous", days: int = 7, session: SessionD
         "totals_by_day": {},
         "trends": {"summary": "Tendances calculées sur la période"},
     }
-
-

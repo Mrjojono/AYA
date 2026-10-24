@@ -11,11 +11,10 @@ from aya_api.barcode.adapters.off_local import OffLocalAdapter
 
 def build_adapters(session: AsyncSession) -> dict:
     """Build all adapters."""
-    adapters = {
+    return {
         "cache": CacheAdapter(session),
         "interne_valide": InternalAdapter(session),
         "off_local": OffLocalAdapter(session),
         "gs1_gepir": Gs1GepirAdapter(session),
         "api_commerciale": CommercialAdapter(session),
     }
-    return adapters

@@ -1,7 +1,6 @@
 """Barcode orchestrator with tracing."""
 
 import time
-from datetime import datetime
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -12,7 +11,7 @@ from aya_api.models import BarcodeLookupAttempt
 
 
 class BarcodeOrchestrator:
-    def __init__(self, session: AsyncSession):
+    def __init__(self, session: AsyncSession) -> None:
         self.session = session
         self.adapters = build_adapters(session)
         self.config = load_sources_config()
@@ -20,7 +19,9 @@ class BarcodeOrchestrator:
     async def resolve(self, gtin: str) -> tuple[SourceResult | None, list[dict]]:
         """Resolve barcode by trying sources in order."""
         gtin_norm = gtin.strip().replace("-", "").replace(" ", "")
-        order = self.config.get("barcode", {}).get("order", ["cache", "interne_valide", "off_local"])
+        order = self.config.get("barcode", {}).get(
+            "order", ["cache", "interne_valide", "off_local"]
+        )
         stop_on_first = self.config.get("barcode", {}).get("stop_on_first_valid", True)
         attempts = []
         chosen_result = None
@@ -40,7 +41,9 @@ class BarcodeOrchestrator:
                 error = str(e)
             latency_ms = int((time.time() - start) * 1000)
             found = bool(result and result.found)
-            license = getattr(adapter, "license", result.license if result else "unknown")
+            license = getattr(
+                adapter, "license", result.license if result else "unknown"
+            )
 
             attempt = BarcodeLookupAttempt(
                 gtin=gtin_norm,
@@ -74,7 +77,9 @@ class BarcodeOrchestrator:
     async def search(self, name: str) -> list[SourceResult]:
         """Search across sources."""
         results = []
-        order = self.config.get("search", {}).get("order", ["interne_valide", "off_local"])
+        order = self.config.get("search", {}).get(
+            "order", ["interne_valide", "off_local"]
+        )
         for source_name in order:
             adapter = self.adapters.get(source_name)
             if not adapter or (hasattr(adapter, "enabled") and not adapter.enabled):

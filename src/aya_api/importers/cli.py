@@ -1,19 +1,16 @@
-
-
 def _run_openfoodfacts() -> int:
     import asyncio
     from pathlib import Path
-
-    import asyncpg
 
     from aya_api.config import get_settings
     from aya_api.db import AsyncSessionLocal
     from aya_api.importers import openfoodfacts
 
-    settings = get_settings()
+    get_settings()
     path = Path("databasesFiles/openfoodfacts.jsonl")
     if not path.exists():
         path = Path("databasesFiles/off.jsonl")
+
     async def main() -> int:
         async with AsyncSessionLocal() as session:
             return await openfoodfacts.import_from_jsonl(session, path)
@@ -45,14 +42,12 @@ def _run_lnme() -> int:
 if __name__ == "__main__":
     import sys
 
-    if len(sys.argv) > 1 and sys.argv[1] == "openfoodfacts":
+    if (len(sys.argv) > 1 and sys.argv[1] == "openfoodfacts") or (len(sys.argv) > 1 and sys.argv[1] == "off"):
         count = _run_openfoodfacts()
-        print(f"Imported {count} products")
-    elif len(sys.argv) > 1 and sys.argv[1] == "off":
-        count = _run_openfoodfacts()
-        print(f"Imported {count} products")
     elif len(sys.argv) > 1 and sys.argv[1] in ("lnme", "benin", "haiti"):
         count = _run_lnme()
-        print(f"Imported {count} medications from LNME")
     else:
-        raise SystemExit("usage: python -m aya_api.importers.cli <ddinter|wafct|oms|openfoodfacts|lnme>")
+        msg = "usage: python -m aya_api.importers.cli <ddinter|wafct|oms|openfoodfacts|lnme>"
+        raise SystemExit(
+            msg
+        )

@@ -24,4 +24,3 @@ async def check_rule(drug: str, food: str, session: SessionDep) -> dict[str, obj
 async def matrix(session: SessionDep) -> list[dict[str, str]]:
     """Return active rule matrix."""
     return await get_matrix(session)
-

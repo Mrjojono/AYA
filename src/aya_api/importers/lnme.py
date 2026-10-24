@@ -3,12 +3,16 @@
 from __future__ import annotations
 
 import csv
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from aya_api.models import ImportReport, Medication
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
+    from sqlalchemy.ext.asyncio import AsyncSession
 
 
 async def import_lnme_benin(session: AsyncSession, path: Path) -> int:
@@ -20,11 +24,15 @@ async def import_lnme_benin(session: AsyncSession, path: Path) -> int:
             dci = (row.get("dci") or "").strip()
             if not dci:
                 continue
-            commercial = (row.get("exemples_specialites_benin") or row.get("nom_commercial") or "").strip()
+            commercial = (
+                row.get("exemples_specialites_benin") or row.get("nom_commercial") or ""
+            ).strip()
             forme = (row.get("forme_dosage") or "").strip()
             atc = (row.get("atc_code") or "").strip() or None
             section = (row.get("section_lnme") or "").strip()
-            stmt = select(Medication).where(Medication.dci.ilike(dci), Medication.commercial_name == commercial)
+            stmt = select(Medication).where(
+                Medication.dci.ilike(dci), Medication.commercial_name == commercial
+            )
             res = await session.execute(stmt)
             existing = res.scalars().first()
             if existing:
@@ -69,7 +77,9 @@ async def import_lnme_haiti(session: AsyncSession, path: Path) -> int:
             dosage = (row.get("dosage") or "").strip()
             atc = (row.get("atc_code") or "").strip() or None
             classe = (row.get("classe_lnme") or "").strip()
-            stmt = select(Medication).where(Medication.dci.ilike(dci), Medication.commercial_name == commercial)
+            stmt = select(Medication).where(
+                Medication.dci.ilike(dci), Medication.commercial_name == commercial
+            )
             res = await session.execute(stmt)
             existing = res.scalars().first()
             if existing:

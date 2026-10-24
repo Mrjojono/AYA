@@ -3,15 +3,14 @@
 from pathlib import Path
 
 import cv2
-import numpy as np
-from PIL import Image
 
 
 def preprocess_image(input_path: Path, output_path: Path | None = None) -> Path:
     """Preprocess image for better OCR results."""
     img = cv2.imread(str(input_path))
     if img is None:
-        raise ValueError(f"Cannot read image {input_path}")
+        msg = f"Cannot read image {input_path}"
+        raise ValueError(msg)
 
     # Convert to grayscale
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)

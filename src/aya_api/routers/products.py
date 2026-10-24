@@ -100,7 +100,14 @@ async def coverage_run(gtins: list[str], session: SessionDep) -> dict[str, objec
     results = []
     for gtin in gtins:
         res, attempts = await orch.resolve(gtin)
-        results.append({"gtin": gtin.strip(), "found": bool(res and res.found), "chosen_source": res.source if res else None, "attempts": attempts})
+        results.append(
+            {
+                "gtin": gtin.strip(),
+                "found": bool(res and res.found),
+                "chosen_source": res.source if res else None,
+                "attempts": attempts,
+            }
+        )
     return {"count": len(results), "results": results}
 
 
@@ -108,12 +115,18 @@ async def coverage_run(gtins: list[str], session: SessionDep) -> dict[str, objec
 async def coverage_matrix(session: SessionDep) -> dict[str, object]:
     """Build coverage matrix from lookup attempts."""
     # Get all GTINs
-    gtins_stmt = select(BarcodeLookupAttempt.gtin).distinct().order_by(BarcodeLookupAttempt.gtin)
+    gtins_stmt = (
+        select(BarcodeLookupAttempt.gtin).distinct().order_by(BarcodeLookupAttempt.gtin)
+    )
     gtins_res = await session.execute(gtins_stmt)
     gtins = [g[0] for g in gtins_res.all()]
     matrix = []
     for gtin in gtins:
-        stmt = select(BarcodeLookupAttempt).where(BarcodeLookupAttempt.gtin == gtin).order_by(BarcodeLookupAttempt.created_at)
+        stmt = (
+            select(BarcodeLookupAttempt)
+            .where(BarcodeLookupAttempt.gtin == gtin)
+            .order_by(BarcodeLookupAttempt.created_at)
+        )
         res = await session.execute(stmt)
         attempts = res.scalars().all()
         row = {"gtin": gtin}
@@ -126,7 +139,7 @@ async def coverage_matrix(session: SessionDep) -> dict[str, object]:
         matrix.append(row)
     sources = []
     if matrix:
-        for k in matrix[0].keys():
+        for k in matrix[0]:
             if k not in ("gtin", "resultat_retenu"):
                 sources.append(k)
     return {"sources": sources, "matrix": matrix, "count": len(matrix)}
@@ -140,10 +153,28 @@ async def coverage_stats(session: SessionDep) -> dict[str, object]:
     sources = [s[0] for s in sources_res.all()]
     stats = {}
     for src in sources:
-        total = await session.execute(select(func.count(BarcodeLookupAttempt.id)).where(BarcodeLookupAttempt.source == src))
-        found = await session.execute(select(func.count(BarcodeLookupAttempt.id)).where(BarcodeLookupAttempt.source == src, BarcodeLookupAttempt.found.is_(True)))
-        errors = await session.execute(select(func.count(BarcodeLookupAttempt.id)).where(BarcodeLookupAttempt.source == src, BarcodeLookupAttempt.error.is_not(None)))
-        chosen = await session.execute(select(func.count(BarcodeLookupAttempt.id)).where(BarcodeLookupAttempt.source == src, BarcodeLookupAttempt.chosen.is_(True)))
+        total = await session.execute(
+            select(func.count(BarcodeLookupAttempt.id)).where(
+                BarcodeLookupAttempt.source == src
+            )
+        )
+        found = await session.execute(
+            select(func.count(BarcodeLookupAttempt.id)).where(
+                BarcodeLookupAttempt.source == src, BarcodeLookupAttempt.found.is_(True)
+            )
+        )
+        errors = await session.execute(
+            select(func.count(BarcodeLookupAttempt.id)).where(
+                BarcodeLookupAttempt.source == src,
+                BarcodeLookupAttempt.error.is_not(None),
+            )
+        )
+        chosen = await session.execute(
+            select(func.count(BarcodeLookupAttempt.id)).where(
+                BarcodeLookupAttempt.source == src,
+                BarcodeLookupAttempt.chosen.is_(True),
+            )
+        )
         stats[src] = {
             "total_attempts": total.scalar() or 0,
             "found": found.scalar() or 0,
@@ -158,10 +189,18 @@ async def cache_stats(session: SessionDep) -> dict[str, object]:
     """Stats about cached products."""
     total = await session.execute(select(func.count(Product.id)))
     total_count = total.scalar() or 0
-    high = await session.execute(select(func.count(Product.id)).where(Product.data_quality == "high"))
-    medium = await session.execute(select(func.count(Product.id)).where(Product.data_quality == "medium"))
-    low = await session.execute(select(func.count(Product.id)).where(Product.data_quality == "low"))
-    consulted = await session.execute(select(func.count(Product.id)).where(Product.last_consulted_at.is_not(None)))
+    high = await session.execute(
+        select(func.count(Product.id)).where(Product.data_quality == "high")
+    )
+    medium = await session.execute(
+        select(func.count(Product.id)).where(Product.data_quality == "medium")
+    )
+    low = await session.execute(
+        select(func.count(Product.id)).where(Product.data_quality == "low")
+    )
+    consulted = await session.execute(
+        select(func.count(Product.id)).where(Product.last_consulted_at.is_not(None))
+    )
     return {
         "total_cached": total_count,
         "quality": {
@@ -172,4 +211,3 @@ async def cache_stats(session: SessionDep) -> dict[str, object]:
         "consulted_count": consulted.scalar() or 0,
         "coverage": {"cached_products": total_count},
     }
-
