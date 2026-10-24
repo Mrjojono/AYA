@@ -49,5 +49,5 @@ if __name__ == "__main__":
     elif len(sys.argv) > 1 and sys.argv[1] in ("lnme", "benin", "haiti"):
         count = _run_lnme()
     else:
-        msg = "usage: python -m aya_api.importers.cli <ddinter|wafct|oms|openfoodfacts|lnme>"
+        msg = "usage: python -m aya_api.importers.cli <ddinter|wafct|oms|openfoodfacts|lnme>"  # noqa: E501
         raise SystemExit(msg)
