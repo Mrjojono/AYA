@@ -48,8 +48,8 @@ async def import_from_jsonl(
     """Import products from JSONL file."""
     count = 0
     with path.open() as f:
-        for line in f:
-            line = line.strip()
+        for raw_line in f:
+            line = raw_line.strip()
             if not line:
                 continue
             try:
