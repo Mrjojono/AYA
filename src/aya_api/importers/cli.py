@@ -42,12 +42,12 @@ def _run_lnme() -> int:
 if __name__ == "__main__":
     import sys
 
-    if (len(sys.argv) > 1 and sys.argv[1] == "openfoodfacts") or (len(sys.argv) > 1 and sys.argv[1] == "off"):
+    if (len(sys.argv) > 1 and sys.argv[1] == "openfoodfacts") or (
+        len(sys.argv) > 1 and sys.argv[1] == "off"
+    ):
         count = _run_openfoodfacts()
     elif len(sys.argv) > 1 and sys.argv[1] in ("lnme", "benin", "haiti"):
         count = _run_lnme()
     else:
         msg = "usage: python -m aya_api.importers.cli <ddinter|wafct|oms|openfoodfacts|lnme>"
-        raise SystemExit(
-            msg
-        )
+        raise SystemExit(msg)
