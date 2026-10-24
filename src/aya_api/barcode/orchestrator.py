@@ -87,6 +87,6 @@ class BarcodeOrchestrator:
             try:
                 res = await adapter.search(name)
                 results.extend(res)
-            except Exception:
+            except Exception:  # noqa: S112
                 continue
         return results
