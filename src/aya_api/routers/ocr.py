@@ -68,4 +68,6 @@ async def process_label(
                 await asyncio.to_thread(filepath.unlink)
         except OSError:
             pass
-        raise HTTPException(status_code=500, detail=f"OCR processing failed: {e!s}") from e
+        raise HTTPException(
+            status_code=500, detail=f"OCR processing failed: {e!s}"
+        ) from e

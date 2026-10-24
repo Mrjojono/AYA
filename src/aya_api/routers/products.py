@@ -137,13 +137,10 @@ async def coverage_matrix(session: SessionDep) -> dict[str, object]:
                 chosen = a.source
         row["resultat_retenu"] = chosen or "aucun"
         matrix.append(row)
-    sources = []
+    sources: list[str] = []
     if matrix:
-        for k in matrix[0]:
-            if k not in ("gtin", "resultat_retenu"):
-        sources: list[str] = []
         sources.extend(k for k in matrix[0] if k not in ("gtin", "resultat_retenu"))
-        return {"sources": sources, "matrix": matrix, "count": len(matrix)}
+    return {"sources": sources, "matrix": matrix, "count": len(matrix)}
 
 
 @router.get("/coverage/stats")

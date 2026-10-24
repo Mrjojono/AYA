@@ -36,9 +36,9 @@ async def total(
 async def check_totals(
     food_names: list[str],
     quantities_g: list[float],
+    session: SessionDep,
     session_id: str = "anonymous",
     age: int | None = None,
-    session: SessionDep,
 ) -> dict[str, object]:
     """Compute totals and detect nutrient excess vs OMS thresholds."""
     stmt = select(Food).where(Food.name.in_(food_names))
@@ -94,7 +94,9 @@ async def check_totals(
 
 @router.get("/trends")
 async def trends(
-    session_id: str = "anonymous", days: int = 7, session: SessionDep
+    session: SessionDep,
+    session_id: str = "anonymous",
+    days: int = 7,
 ) -> dict[str, object]:
     """Get daily/weekly nutrition totals and trends."""
     _ = datetime.now(UTC) - timedelta(days=days)

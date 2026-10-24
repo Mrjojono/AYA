@@ -20,11 +20,11 @@ SessionDep = Annotated[AsyncSession, Depends(get_session)]
 @router.post("/analyze")
 async def analyze_meal(
     text: str,
+    session: SessionDep,
     session_id: str = "anonymous",
     food_names: list[str] | None = None,
     quantities_g: list[float] | None = None,
     medications: list[str] | None = None,
-    session: SessionDep,
 ) -> dict[str, object]:
     """Orchestrate full analysis: extract, compute nutrition, check interactions."""
     foods_db = (await session.execute(select(Food))).scalars().all()
