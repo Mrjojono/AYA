@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from aya_api.db import get_session
-from aya_api.rules import check
+from aya_api.rules import check, get_matrix
 
 router = APIRouter(prefix="/rules", tags=["rules"])
 
@@ -18,3 +18,10 @@ async def check_rule(drug: str, food: str, session: SessionDep) -> dict[str, obj
     """Check interaction severity for a drug-food pair."""
     severity = await check(session, drug, food)
     return {"drug": drug, "food": food, "severity": severity}
+
+
+@router.get("/matrix")
+async def matrix(session: SessionDep) -> list[dict[str, str]]:
+    """Return active rule matrix."""
+    return await get_matrix(session)
+
