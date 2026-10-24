@@ -19,7 +19,7 @@ SessionDep = Annotated[AsyncSession, Depends(get_session)]
 async def evaluate(
     drug: str,
     food: str,
-    session: SessionDep = None,
+    session: SessionDep,
     session_id: str = "anonymous",
 ) -> dict[str, object]:
     """Evaluate a drug-food pair and return a three-tier outcome."""
