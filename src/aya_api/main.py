@@ -17,7 +17,9 @@ from aya_api.routers import (
     meals,
     medications,
     nutrition,
+    ocr,
     orchestrator,
+    products,
     profile,
     referentials,
     rules,
@@ -64,6 +66,8 @@ def create_app() -> FastAPI:
     application.include_router(rules.router)
     application.include_router(engine_router.router)
     application.include_router(orchestrator.router)
+    application.include_router(products.router)
+    application.include_router(ocr.router)
     return application
 
 
