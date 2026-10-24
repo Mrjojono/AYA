@@ -3,6 +3,7 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
+from rapidfuzz import process
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -23,7 +24,7 @@ async def analyze_meal(
     food_names: list[str] | None = None,
     quantities_g: list[float] | None = None,
     medications: list[str] | None = None,
-    session: SessionDep = None,
+    session: SessionDep,
 ) -> dict[str, object]:
     """Orchestrate full analysis: extract, compute nutrition, check interactions."""
     foods_db = (await session.execute(select(Food))).scalars().all()
@@ -39,8 +40,6 @@ async def analyze_meal(
                 extracted.append({"name": name, "in_reference": False})
     else:
         # simple extraction from text
-        from rapidfuzz import process
-
         keys = (
             [f.name for f in foods_db]
             + [g.term for g in glossary]
@@ -55,7 +54,7 @@ async def analyze_meal(
             extracted.append({"name": name, "score": score, "in_reference": True})
 
     # Nutrition
-    totals = {}
+    totals: dict = {}
     if food_names and quantities_g:
         food_dicts = [
             {"name": f.name, "nutrients": f.nutrients}

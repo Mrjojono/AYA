@@ -1,6 +1,6 @@
 """Nutrition routes."""
 
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
@@ -14,6 +14,7 @@ from aya_api.nutrition import total_nutrients
 router = APIRouter(prefix="/nutrition", tags=["nutrition"])
 
 SessionDep = Annotated[AsyncSession, Depends(get_session)]
+_MIN_EXCEEDED_COUNT = 2
 
 
 @router.post("/total")
@@ -37,7 +38,7 @@ async def check_totals(
     quantities_g: list[float],
     session_id: str = "anonymous",
     age: int | None = None,
-    session: SessionDep = None,
+    session: SessionDep,
 ) -> dict[str, object]:
     """Compute totals and detect nutrient excess vs OMS thresholds."""
     stmt = select(Food).where(Food.name.in_(food_names))
@@ -74,7 +75,7 @@ async def check_totals(
             )
 
     message = None
-    if exceeded and len(exceeded) >= 2:
+    if exceeded and len(exceeded) >= _MIN_EXCEEDED_COUNT:
         message = (
             "Dépassements fréquents observés : privilégiez l'équilibre sur la journée."
         )
@@ -93,10 +94,10 @@ async def check_totals(
 
 @router.get("/trends")
 async def trends(
-    session_id: str = "anonymous", days: int = 7, session: SessionDep = None
+    session_id: str = "anonymous", days: int = 7, session: SessionDep
 ) -> dict[str, object]:
     """Get daily/weekly nutrition totals and trends."""
-    datetime.utcnow() - timedelta(days=days)
+    _ = datetime.now(UTC) - timedelta(days=days)
     stmt = (
         select(Meal)
         .where(Meal.session_id == session_id)
@@ -105,15 +106,14 @@ async def trends(
     result = await session.execute(stmt)
     meals = result.scalars().all()
     # Return structure for trends (placeholder aggregates)
-    daily = []
-    for m in meals:
-        daily.append(
-            {
-                "date": m.created_at.date().isoformat() if m.created_at else None,
-                "meal_id": m.id,
-                "raw_text": m.raw_text,
-            }
-        )
+    daily = [
+        {
+            "date": m.created_at.date().isoformat() if m.created_at else None,
+            "meal_id": m.id,
+            "raw_text": m.raw_text,
+        }
+        for m in meals
+    ]
     return {
         "session_id": session_id,
         "days": days,

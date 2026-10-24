@@ -25,7 +25,7 @@ async def import_wafct(session: AsyncSession, xlsx_path: Path) -> int:
         name = str(row[1]).strip() if len(row) > 1 and row[1] is not None else ""
         nutrients = {}
         for i, h in enumerate(header):
-            if i < 2 or not h:  # noqa: PLR2004
+            if i < 2 or not h:
                 continue
             v = row[i] if i < len(row) else None
             if v is not None:

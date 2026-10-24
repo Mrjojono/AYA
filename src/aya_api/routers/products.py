@@ -1,6 +1,6 @@
 """Product/barcode routes."""
 
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -27,7 +27,7 @@ async def get_by_barcode(ean: str, session: SessionDep) -> dict[str, object]:
         res = await session.execute(stmt)
         prod = res.scalars().first()
         if prod:
-            prod.last_consulted_at = datetime.utcnow()
+            prod.last_consulted_at = datetime.now(UTC)
             await session.commit()
         return {
             "barcode": result.gtin,
@@ -52,7 +52,7 @@ async def get_by_barcode(ean: str, session: SessionDep) -> dict[str, object]:
     prod = result2.scalars().first()
     if prod is None:
         raise HTTPException(status_code=404, detail="Product not found")
-    prod.last_consulted_at = datetime.utcnow()
+    prod.last_consulted_at = datetime.now(UTC)
     await session.commit()
     return {
         "barcode": prod.barcode,
@@ -141,8 +141,9 @@ async def coverage_matrix(session: SessionDep) -> dict[str, object]:
     if matrix:
         for k in matrix[0]:
             if k not in ("gtin", "resultat_retenu"):
-                sources.append(k)
-    return {"sources": sources, "matrix": matrix, "count": len(matrix)}
+        sources: list[str] = []
+        sources.extend(k for k in matrix[0] if k not in ("gtin", "resultat_retenu"))
+        return {"sources": sources, "matrix": matrix, "count": len(matrix)}
 
 
 @router.get("/coverage/stats")

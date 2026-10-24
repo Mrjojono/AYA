@@ -1,6 +1,6 @@
 """OCR routes for label extraction."""
 
-import os
+import asyncio
 import uuid
 from pathlib import Path
 from typing import Annotated
@@ -45,11 +45,10 @@ async def process_label(
 
     # Save to temp
     tmp_dir = Path(ocr_config.tmp_dir)
-    tmp_dir.mkdir(parents=True, exist_ok=True)
+    await asyncio.to_thread(tmp_dir.mkdir, parents=True, exist_ok=True)
     filename = f"{uuid.uuid4()}.{ext}"
     filepath = tmp_dir / filename
-    with filepath.open("wb") as f:
-        f.write(content)
+    await asyncio.to_thread(filepath.write_bytes, content)
 
     # Process
     pipeline = OCRPipeline()
@@ -60,11 +59,13 @@ async def process_label(
             "filename": file.filename,
             **result,
         }
+    except HTTPException:
+        raise
     except Exception as e:
         # Ensure cleanup on error
         try:
-            if filepath.exists():
-                os.unlink(filepath)
-        except Exception:
+            if await asyncio.to_thread(filepath.exists):
+                await asyncio.to_thread(filepath.unlink)
+        except OSError:
             pass
-        raise HTTPException(status_code=500, detail=f"OCR processing failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"OCR processing failed: {e!s}") from e
