@@ -10,7 +10,20 @@ from pydantic import BaseModel, ConfigDict
 from aya_api.db import engine
 from aya_api.logging import configure_logging
 from aya_api.rate_limit import RateLimitMiddleware
-from aya_api.routers import auth, glossary, meals, medications, nutrition, rules
+from aya_api.routers import (
+    auth,
+    consent,
+    glossary,
+    meals,
+    medications,
+    nutrition,
+    ocr,
+    orchestrator,
+    products,
+    profile,
+    referentials,
+    rules,
+)
 from aya_api.routers import engine as engine_router
 
 configure_logging()
@@ -43,12 +56,18 @@ def create_app() -> FastAPI:
         return HealthResponse(status="ok")
 
     application.include_router(auth.router)
+    application.include_router(profile.router)
+    application.include_router(consent.router)
+    application.include_router(referentials.router)
     application.include_router(medications.router)
     application.include_router(meals.router)
     application.include_router(nutrition.router)
     application.include_router(glossary.router)
     application.include_router(rules.router)
     application.include_router(engine_router.router)
+    application.include_router(orchestrator.router)
+    application.include_router(products.router)
+    application.include_router(ocr.router)
     return application
 
 

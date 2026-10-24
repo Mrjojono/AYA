@@ -1,0 +1,16 @@
+barcode:
+  order:
+    - cache
+    - interne_valide
+    - off_local
+    - gs1_gepir
+    - api_commerciale
+  stop_on_first_valid: true
+  timeout_per_source_s: 3
+
+search:
+  order:
+    - interne_valide
+    - off_local
+    - api_commerciale
+  parallel_for_search: true

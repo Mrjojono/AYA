@@ -218,3 +218,55 @@ class ImportReport(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
+
+
+class Product(Base):
+    """Product from Open Food Facts (code-barres)."""
+
+    __tablename__: str = "product"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    barcode: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    product_name: Mapped[str | None] = mapped_column(String(512), nullable=True)
+    brands: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    ingredients_text: Mapped[str | None] = mapped_column(Text, nullable=True)
+    categories: Mapped[str | None] = mapped_column(Text, nullable=True)
+    nutrients: Mapped[dict[str, object]] = mapped_column(JSONB, default=dict)
+    nutriscore_grade: Mapped[str | None] = mapped_column(String(8), nullable=True)
+    nova_group: Mapped[int | None] = mapped_column(nullable=True)
+    image_url: Mapped[str | None] = mapped_column(Text, nullable=True)
+    countries: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    source: Mapped[str] = mapped_column(String(64), default="openfoodfacts")
+    source_version: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    confidence: Mapped[float] = mapped_column(default=0.0)
+    data_quality: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    validated: Mapped[bool] = mapped_column(default=False)
+    license: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    last_consulted_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
+
+
+class BarcodeLookupAttempt(Base):
+    """Trace of barcode lookup across sources for coverage matrix."""
+
+    __tablename__: str = "barcode_lookup_attempt"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    gtin: Mapped[str] = mapped_column(String(64), index=True)
+    source: Mapped[str] = mapped_column(String(32), index=True)
+    found: Mapped[bool] = mapped_column(default=False)
+    latency_ms: Mapped[int | None] = mapped_column(nullable=True)
+    error: Mapped[str | None] = mapped_column(Text, nullable=True)
+    license: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    chosen: Mapped[bool] = mapped_column(default=False)
+    confidence: Mapped[float | None] = mapped_column(nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )

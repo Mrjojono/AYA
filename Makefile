@@ -37,3 +37,8 @@ import-wafct:
 
 import-oms:
 	uv run python -m aya_api.importers.cli oms
+import-off:
+	uv run python -m aya_api.importers.cli openfoodfacts
+
+import-lnme:
+	uv run python -m aya_api.importers.cli lnme
