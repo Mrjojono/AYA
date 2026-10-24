@@ -17,7 +17,10 @@ SessionDep = Annotated[AsyncSession, Depends(get_session)]
 
 @router.get("/evaluate")
 async def evaluate(
-    drug: str, food: str, session_id: str = "anonymous", session: SessionDep = None
+    drug: str,
+    food: str,
+    session: SessionDep = None,
+    session_id: str = "anonymous",
 ) -> dict[str, object]:
     """Evaluate a drug-food pair and return a three-tier outcome."""
     severity = await check(session, drug, food)

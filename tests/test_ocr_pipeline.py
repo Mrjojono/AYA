@@ -11,14 +11,14 @@ def test_etiquettes_dir_exists() -> None:
 
 def test_pipeline_structure() -> None:
     """Test OCR pipeline modules exist."""
-    import aya_api.ocr.engine
-    import aya_api.ocr.extract
-    import aya_api.ocr.pipeline
-    import aya_api.ocr.preprocess
-    import aya_api.ocr.quality
+    import aya_api.ocr.engine  # noqa: F401
+    import aya_api.ocr.extract  # noqa: F401
+    import aya_api.ocr.pipeline  # noqa: F401
+    import aya_api.ocr.preprocess  # noqa: F401
+    import aya_api.ocr.quality  # noqa: F401
 
     assert aya_api.ocr.preprocess is not None
-    assert engine is not None
-    assert quality is not None
-    assert extract is not None
-    assert pipeline is not None
+    assert aya_api.ocr.engine is not None
+    assert aya_api.ocr.quality is not None
+    assert aya_api.ocr.extract is not None
+    assert aya_api.ocr.pipeline is not None
