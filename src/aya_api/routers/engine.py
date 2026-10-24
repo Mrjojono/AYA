@@ -46,7 +46,9 @@ async def _check_allergies(
         if any(a and a in food_l for a in allergies):
             alerts.append(f"Allergène potentiel détecté pour {food}")
     if profile.conditions:
-        alerts.append(f"Profil : conditions déclarées à considérer - {profile.conditions}")
+        alerts.append(
+            f"Profil : conditions déclarées à considérer - {profile.conditions}"
+        )
     return alerts
 
 
